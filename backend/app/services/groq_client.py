@@ -5,6 +5,8 @@ client = Groq(
     api_key= GROQ_API_KEY
 )
 
+print("Groq Key Loaded:", bool(GROQ_API_KEY))
+
 def ask_groq(prompt, json_mode=False):
     kwargs = {
         "model": "llama-3.3-70b-versatile",
