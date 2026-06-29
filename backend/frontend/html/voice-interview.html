@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice Interview - Job Co-Pilot</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="container">
@@ -24,7 +24,7 @@
                 <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
             </div>
             <div class="sidebar-footer">
-                <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+                <button id="logoutBtnSidebar" class="logout-btn" onclick="return doLogout();">🚪 Logout</button>
             </div>
         </nav>
 
@@ -32,7 +32,7 @@
             <div class="top-bar">
                 <h1>🎤 Voice Mock Interview</h1>
                 <div class="top-bar-actions">
-                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                    <button id="logoutBtn" class="btn-secondary" onclick="return doLogout();">Logout</button>
                 </div>
             </div>
 
@@ -57,7 +57,7 @@
                         <option value="challenging">🔴 Challenging</option>
                     </select>
                 </div>
-                <button id="startSessionBtn" class="btn-primary btn-lg">🎤 Start Interview Session</button>
+                <button id="startSessionBtn" class="btn-primary btn-lg" onclick="return startSession();">🎤 Start Interview Session</button>
                 <p id="setupMessage" class="message"></p>
             </div>
 
@@ -83,14 +83,14 @@
                 <div class="interview-card">
                     <h3>🎙️ Your Answer</h3>
                     <div class="voice-controls">
-                        <button id="startRecordingBtn" class="btn-primary">🎙️ Start Recording</button>
-                        <button id="stopRecordingBtn" class="btn-secondary" style="display: none;">⏹️ Stop</button>
+                        <button id="startRecordingBtn" class="btn-primary" onclick="return startRecording();">🎙️ Start Recording</button>
+                        <button id="stopRecordingBtn" class="btn-secondary" style="display: none;" onclick="return stopRecording();">⏹️ Stop</button>
                         <span id="recordingStatus" class="recording-status">Ready</span>
                     </div>
                     <textarea id="answerInput" class="answer-input" placeholder="Your transcribed answer will appear here. You can also type your answer." rows="6"></textarea>
                     <div class="button-row" style="display: flex; gap: 10px; margin-top: 12px;">
-                        <button id="submitAnswerBtn" class="btn-primary">📊 Submit for Evaluation</button>
-                        <button id="nextQuestionBtn" class="btn-secondary" disabled>Next Question ➡️</button>
+                        <button id="submitAnswerBtn" class="btn-primary" onclick="return submitAnswer();">📊 Submit for Evaluation</button>
+                        <button id="nextQuestionBtn" class="btn-secondary" disabled onclick="return nextQuestion();">Next Question ➡️</button>
                     </div>
                 </div>
 
@@ -127,293 +127,13 @@
                 <p style="color: var(--text-secondary); margin: 10px 0 20px;">Review your performance below, then start a new session or head back.</p>
                 <div id="sessionSummary"></div>
                 <div class="button-row" style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button id="newSessionBtn" class="btn-primary">🔄 New Session</button>
+                    <button id="newSessionBtn" class="btn-primary" onclick="return resetSession();">🔄 New Session</button>
                     <a href="dashboard.html" class="btn-secondary">← Dashboard</a>
                 </div>
             </div>
         </div>
     </div>
-<script>
-(function() {
-    "use strict";
-    
-    // Show a message in the setup section
-    function showSetupMsg(text, isError) {
-        var el = document.getElementById("setupMessage");
-        if (el) { el.textContent = text; el.style.color = isError ? "crimson" : "green"; }
-    }
-    
-    var API = "http://localhost:8000";
-    var token = localStorage.getItem("token");
-    
-    // If no token, redirect to login
-    if (!token) {
-        window.location.href = "login.html";
-        return;
-    }
-    
-    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    var recognition = null;
-    var isRecording = false;
-    var questNum = 0;
-    var TOTAL = 10;
-    var results = [];
-    var currentQ = "";
-    var currentType = "";
-    var appId = null;
-    
-    function auth() {
-        return { Authorization: "Bearer " + token };
-    }
-    
-    function $(id) { return document.getElementById(id); }
-    
-    // Load applications
-    function loadApps() {
-        fetch(API + "/applications", { headers: auth() })
-        .then(function(r) {
-            if (!r.ok) throw new Error("Failed to load");
-            return r.json();
-        })
-        .then(function(apps) {
-            var sel = $("appSelect");
-            if (!sel) return;
-            sel.innerHTML = '<option value="">-- Select an application --</option>';
-            if (!apps || apps.length === 0) {
-                var o = document.createElement("option");
-                o.value = ""; o.textContent = "No apps found. Create one first."; o.disabled = true;
-                sel.appendChild(o);
-                showSetupMsg("Create an application first.", true);
-                return;
-            }
-            for (var i = 0; i < apps.length; i++) {
-                var a = apps[i];
-                var o = document.createElement("option");
-                o.value = a.id; o.textContent = a.job_title + " @ " + a.company_name;
-                sel.appendChild(o);
-            }
-        })
-        .catch(function(e) {
-            console.error(e);
-            showSetupMsg("Server not running. Start the backend.", true);
-        });
-    }
-    
-    // START SESSION
-    function startSession() {
-        var sel = $("appSelect");
-        if (!sel || !sel.value) {
-            showSetupMsg("Please select an application.", true);
-            return;
-        }
-        appId = sel.value;
-        results = [];
-        questNum = 0;
-        var s = $("setupSection"), i = $("interviewSection"), f = $("feedbackSection"), c = $("completeSection");
-        if (s) s.style.display = "none"; if (i) i.style.display = "block";
-        if (f) f.style.display = "none"; if (c) c.style.display = "none";
-        nextQ();
-    }
-    
-    function nextQ() {
-        if (questNum >= TOTAL) { complete(); return; }
-        questNum++;
-        var ct = $("questionCounter");
-        if (ct) ct.textContent = "Question " + questNum + " of " + TOTAL;
-        
-        fetch(API + "/voice-interview/generate-question", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-            body: JSON.stringify({
-                application_id: parseInt(appId),
-                difficulty: ($("difficultySelect") ? $("difficultySelect").value : "moderate")
-            })
-        })
-        .then(function(r) {
-            if (!r.ok) return r.text().then(function(t) { throw new Error(t); });
-            return r.json();
-        })
-        .then(function(d) {
-            currentQ = d.question; currentType = d.type;
-            var el = $("questionText"); if (el) el.textContent = d.question;
-            var el2 = $("questionType"); if (el2) el2.textContent = d.type;
-            var el3 = $("questionTips"); if (el3) el3.textContent = "💡 " + d.tips;
-            var el4 = $("answerInput"); if (el4) el4.value = "";
-            var el5 = $("feedbackSection"); if (el5) el5.style.display = "none";
-            var sb = $("submitAnswerBtn"); if (sb) { sb.disabled = false; sb.textContent = "📊 Submit for Evaluation"; }
-            var nb = $("nextQuestionBtn"); if (nb) nb.disabled = true;
-            speakIt(d.question);
-        })
-        .catch(function(e) { console.error(e); alert("Failed: " + e.message); });
-    }
-    
-    // RECORDING
-    function startRec() {
-        if (!SpeechRecognition) { alert("Speech recognition not supported"); return; }
-        if (!recognition) {
-            try {
-                recognition = new SpeechRecognition();
-                recognition.continuous = true; recognition.interimResults = true; recognition.lang = "en-US";
-                recognition.onresult = function(e) {
-                    var t = "";
-                    for (var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
-                    var inp = $("answerInput"); if (inp) inp.value = t;
-                };
-                recognition.onerror = function(e) {
-                    console.error(e.error);
-                    var st = $("recordingStatus"); if (st) st.textContent = "Error";
-                    stopRec();
-                };
-                recognition.onend = function() { if (isRecording) try { recognition.start(); } catch(ex) {} };
-            } catch(ex) { console.error(ex); return; }
-        }
-        try {
-            recognition.start(); isRecording = true;
-            var sb = $("startRecordingBtn"); if (sb) sb.style.display = "none";
-            var stb = $("stopRecordingBtn"); if (stb) stb.style.display = "inline-block";
-            var st = $("recordingStatus"); if (st) { st.textContent = "🔴 Recording..."; st.className = "recording-status recording"; }
-        } catch(ex) { console.error(ex); }
-    }
-    
-    function stopRec() {
-        if (recognition) try { recognition.stop(); } catch(ex) {}
-        isRecording = false;
-        var sb = $("startRecordingBtn"); if (sb) sb.style.display = "inline-block";
-        var stb = $("stopRecordingBtn"); if (stb) stb.style.display = "none";
-        var st = $("recordingStatus"); if (st) { st.textContent = "✅ Stopped"; st.className = "recording-status"; }
-    }
-    
-    function speakIt(text) {
-        if (!window.speechSynthesis) return;
-        try { var u = new SpeechSynthesisUtterance(text); u.rate = 0.9; u.pitch = 1; window.speechSynthesis.speak(u); } catch(ex) {}
-    }
-    
-    // SUBMIT ANSWER
-    function submitAns() {
-        var inp = $("answerInput");
-        var ans = inp ? inp.value.trim() : "";
-        if (!ans) {
-            showFeed("—", "Please provide an answer.", [], [], "");
-            return;
-        }
-        var btn = $("submitAnswerBtn");
-        if (btn) { btn.disabled = true; btn.textContent = "⏳ Evaluating..."; }
-        
-        fetch(API + "/voice-interview/evaluate-answer", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-            body: JSON.stringify({
-                question: currentQ,
-                candidate_answer: ans,
-                application_id: parseInt(appId)
-            })
-        })
-        .then(function(r) {
-            if (!r.ok) return r.text().then(function(t) { throw new Error(t); });
-            return r.json();
-        })
-        .then(function(d) {
-            results.push({
-                question: currentQ, answer: ans, score: d.score, feedback: d.feedback,
-                strengths: d.strengths || [], weaknesses: d.weaknesses || [],
-                modelAnswer: d.model_answer
-            });
-            showFeed(d.score, d.feedback, d.strengths || [], d.weaknesses || [], d.model_answer || "No model answer");
-            if (btn) { btn.textContent = "✅ Submitted"; btn.disabled = true; }
-            var nb = $("nextQuestionBtn"); if (nb) nb.disabled = false;
-        })
-        .catch(function(e) {
-            console.error(e);
-            showFeed("⚠️", "Evaluation failed: " + e.message, [], [], "");
-            if (btn) { btn.disabled = false; btn.textContent = "📊 Submit for Evaluation"; }
-            var nb = $("nextQuestionBtn"); if (nb) nb.disabled = false;
-        });
-    }
-    
-    function showFeed(score, fb, strengths, weaknesses, model) {
-        var fs = $("feedbackSection"); if (fs) fs.style.display = "block";
-        var se = $("scoreDisplay"); if (se) {
-            se.textContent = score;
-            if (typeof score === "number") se.className = "score-circle " + (score >= 70 ? "high" : score >= 40 ? "medium" : "low");
-            else se.className = "score-circle low";
-        }
-        var ft = $("feedbackText"); if (ft) ft.textContent = fb;
-        var sl = $("strengthsList"); if (sl) {
-            sl.innerHTML = "";
-            for (var i = 0; i < strengths.length; i++) { var li = document.createElement("li"); li.textContent = strengths[i]; sl.appendChild(li); }
-        }
-        var wl = $("weaknessesList"); if (wl) {
-            wl.innerHTML = "";
-            for (var i = 0; i < weaknesses.length; i++) { var li = document.createElement("li"); li.textContent = weaknesses[i]; wl.appendChild(li); }
-        }
-        var ma = $("modelAnswer"); if (ma) ma.textContent = model;
-    }
-    
-    // NEXT QUESTION
-    function goNext() {
-        var sb = $("submitAnswerBtn"); if (sb) { sb.disabled = false; sb.textContent = "📊 Submit for Evaluation"; }
-        var fs = $("feedbackSection"); if (fs) fs.style.display = "none";
-        nextQ();
-    }
-    
-    function complete() {
-        var iv = $("interviewSection"), cs = $("completeSection");
-        if (iv) iv.style.display = "none"; if (cs) cs.style.display = "block";
-        
-        var avg = results.length > 0 ? Math.round(results.reduce(function(s, r) { return s + r.score; }, 0) / results.length) : 0;
-        var sm = $("sessionSummary");
-        if (sm) {
-            var h = '<div class="summary-stats"><div class="stat-card"><h3>' + results.length + '</h3><p>Questions Answered</p></div><div class="stat-card"><h3>' + avg + '/100</h3><p>Avg Score</p></div><div class="stat-card"><h3>' + results.filter(function(r) { return r.score >= 70; }).length + '</h3><p>Good Answers</p></div></div><h3>Breakdown</h3>';
-            for (var i = 0; i < results.length; i++) {
-                var r = results[i];
-                h += '<div class="result-item"><p><strong>Q' + (i+1) + ':</strong> ' + r.question + '</p><p><strong>Score:</strong> ' + r.score + '/100</p><p><strong>Feedback:</strong> ' + r.feedback + '</p></div>';
-            }
-            sm.innerHTML = h;
-        }
-    }
-    
-    function resetSess() {
-        questNum = 0; results = [];
-        var cs = $("completeSection"), ss = $("setupSection");
-        if (cs) cs.style.display = "none"; if (ss) ss.style.display = "block";
-    }
-    
-    function doLogout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("application_id");
-        localStorage.removeItem("draft_id");
-        window.location.href = "login.html";
-    }
-    
-    // BIND ALL EVENTS using onclick
-    document.addEventListener("DOMContentLoaded", function() {
-        loadApps();
-        
-        var sb = $("startSessionBtn");
-        if (sb) sb.onclick = function() { startSession(); return false; };
-        
-        var rb = $("startRecordingBtn");
-        if (rb) rb.onclick = function() { startRec(); return false; };
-        
-        var stb = $("stopRecordingBtn");
-        if (stb) stb.onclick = function() { stopRec(); return false; };
-        
-        var sub = $("submitAnswerBtn");
-        if (sub) sub.onclick = function() { submitAns(); return false; };
-        
-        var nqb = $("nextQuestionBtn");
-        if (nqb) nqb.onclick = function() { goNext(); return false; };
-        
-        var nsb = $("newSessionBtn");
-        if (nsb) nsb.onclick = function() { resetSess(); return false; };
-        
-        var l1 = $("logoutBtn");
-        if (l1) l1.onclick = function() { doLogout(); return false; };
-        
-        var l2 = $("logoutBtnSidebar");
-        if (l2) l2.onclick = function() { doLogout(); return false; };
-    });
-})();
-</script>
+    <script src="/static/js/config.js"></script>
+<script src="/static/js/voice-interview.js"></script>
 </body>
 </html>
