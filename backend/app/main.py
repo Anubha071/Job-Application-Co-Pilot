@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 from pathlib import Path
 from fastapi.openapi.utils import get_openapi
 from app.database import Base, engine, ensure_sqlite_schema
@@ -31,11 +31,8 @@ app = FastAPI(
     description="API for tracking job applications, built with FastAPI and SQLAlchemy.",
 )
 
-# Previously the app did not mount any static files, so requests like
-# GET /static/html returned 404. Mount the frontend `frontend` folder
-# at the `/static` path so files under `frontend/html` are reachable.
-workspace_root = Path(__file__).resolve().parents[2]
-frontend_dir = workspace_root / "frontend"
+BASE_DIR = Path(__file__).resolve().parent.parent
+frontend_dir = BASE_DIR / "frontend"
 
 # Provide a simple redirect so requests to `/static/html` go to a usable page.
 # Register this route before mounting StaticFiles so the redirect is matched
@@ -141,7 +138,4 @@ app.include_router(
 
 @app.get("/")
 def home():
-    return {
-        "status": "success",
-        "message": "Welcome to the Job Application Tracker API!"
-    }
+    return FileResponse(frontend_dir / "html" / "login.html")
