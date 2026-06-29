@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Application - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">🚀</div>
+                <div><h2>Job Co-Pilot</h2><span>AI-Powered Applications</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <a href="create-application.html" class="active"><span class="nav-icon">➕</span> New Application</a>
+                <div class="nav-label">Tools</div>
+                <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+                <a href="salary-coach.html"><span class="nav-icon">💰</span> Salary Coach</a>
+                <a href="calendar.html"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h1>➕ New Application</h1>
+                <div class="top-bar-actions">
+                    <a href="dashboard.html" class="btn-secondary">← Back</a>
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Application Details</h3>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Upload your resume and paste a job description to generate a tailored application kit with fit analysis, resume rewrite, cover letter, and interview prep.</p>
+                
+                <!-- ⚠️ NOT using <form> tag anymore — browsers can block window.location.href redirects
+                     even with e.preventDefault() when a submit button is inside a form element on some systems.
+                     Using <div> with role="form" avoids this entirely while keeping semantics. -->
+                <div id="applicationForm" role="form" aria-label="New Application Form">
+                    <div class="form-group">
+                        <label for="company">Company *</label>
+                        <input type="text" id="company" class="form-input" placeholder="e.g. Google, Microsoft, Stripe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title *</label>
+                        <input type="text" id="jobTitle" class="form-input" placeholder="e.g. Senior Software Engineer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jdText">Job Description</label>
+                        <textarea id="jdText" class="form-textarea" placeholder="Paste the full job description here..." rows="6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="jdUrl">Or paste a Job Description URL</label>
+                        <input type="text" id="jdUrl" class="form-input" placeholder="https://careers.company.com/job/123">
+                    </div>
+                    <div class="form-group">
+                        <label for="resume">Upload Resume (PDF) *</label>
+                        <input type="file" id="resume" accept=".pdf" required style="padding: 10px 0;">
+                    </div>
+                    <button id="submitAppBtn" class="btn-primary btn-lg">🚀 Generate Application Kit</button>
+                </div>
+                
+                <div id="message" class="message" style="margin-top: 16px;"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/create-application.js"></script>
+</body>
+</html>

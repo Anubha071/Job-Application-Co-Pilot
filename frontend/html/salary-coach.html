@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Coach - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">🚀</div>
+                <div><h2>Job Co-Pilot</h2><span>AI-Powered Applications</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <a href="create-application.html"><span class="nav-icon">➕</span> New Application</a>
+                <div class="nav-label">Tools</div>
+                <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+                <a href="salary-coach.html" class="active"><span class="nav-icon">💰</span> Salary Coach</a>
+                <a href="calendar.html"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h1>💰 Salary Negotiation Coach</h1>
+                <div class="top-bar-actions">
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔧 Generate Negotiation Advice</h3>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Enter your offer details and get AI-powered negotiation scripts, market context, and strategy tips tailored to your resume and the job.</p>
+                
+                <div class="form-group">
+                    <label for="appSelect">Select Application</label>
+                    <select id="appSelect" class="form-select">
+                        <option value="">-- Select an application --</option>
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="currentOffer">Current Offer (optional)</label>
+                        <input type="text" id="currentOffer" class="form-input" placeholder="$120,000 base + bonus">
+                    </div>
+                    <div class="form-group">
+                        <label for="currentSalary">Current Salary (optional)</label>
+                        <input type="text" id="currentSalary" class="form-input" placeholder="$100,000">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location (optional)</label>
+                        <input type="text" id="location" class="form-input" placeholder="San Francisco, CA">
+                    </div>
+                    <div class="form-group">
+                        <label for="yearsExp">Experience (optional)</label>
+                        <input type="text" id="yearsExp" class="form-input" placeholder="5 years">
+                    </div>
+                </div>
+                
+                <button id="generateBtn" class="btn-primary btn-lg">🚀 Generate Advice</button>
+                <p id="message" class="message"></p>
+            </div>
+
+            <div id="results" class="card" style="display: none;">
+                <div class="card-header"><h3>📊 Market Context</h3></div>
+                <div id="marketContext" class="pre-box"></div>
+            </div>
+
+            <div id="scriptsSection" class="card" style="display: none;">
+                <div class="card-header"><h3>📝 Negotiation Scripts</h3></div>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="email">📧 Email</button>
+                    <button class="tab-btn" data-tab="phone">📞 Phone</button>
+                    <button class="tab-btn" data-tab="counter">🔄 Counter</button>
+                </div>
+                <div id="emailScript" class="tab-content active"><pre class="pre-box script-box"></pre><button class="copy-btn btn-secondary btn-sm">📋 Copy</button></div>
+                <div id="phoneScript" class="tab-content"><pre class="pre-box script-box"></pre><button class="copy-btn btn-secondary btn-sm">📋 Copy</button></div>
+                <div id="counterScript" class="tab-content"><pre class="pre-box script-box"></pre><button class="copy-btn btn-secondary btn-sm">📋 Copy</button></div>
+            </div>
+
+            <div id="talkingPointsSection" class="card" style="display: none;">
+                <div class="card-header"><h3>💪 Your Talking Points</h3></div>
+                <ul id="talkingPointsList" class="feature-list"></ul>
+            </div>
+
+            <div id="questionsSection" class="card" style="display: none;">
+                <div class="card-header"><h3>❓ Questions to Ask</h3></div>
+                <ul id="questionsList" class="feature-list"></ul>
+            </div>
+
+            <div id="strategySection" class="card" style="display: none;">
+                <div class="card-header"><h3>🎯 Strategy Tips</h3></div>
+                <ul id="strategyList" class="feature-list"></ul>
+            </div>
+
+            <div id="walkawaySection" class="card" style="display: none;">
+                <div class="card-header"><h3>🚶 Walkaway Point</h3></div>
+                <div id="walkawayPoint" class="pre-box"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/salary-coach.js"></script>
+</body>
+</html>

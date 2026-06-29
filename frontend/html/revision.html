@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Revisions - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">🚀</div>
+          <div><h2>Job Co-Pilot</h2><span>AI-Powered Applications</span></div>
+        </div>
+        <div class="sidebar-nav">
+          <div class="nav-label">Main</div>
+          <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+          <a href="create-application.html"><span class="nav-icon">➕</span> New Application</a>
+          <div class="nav-label">Tools</div>
+          <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+          <a href="salary-coach.html"><span class="nav-icon">💰</span> Salary Coach</a>
+          <a href="calendar.html"><span class="nav-icon">📅</span> Calendar</a>
+          <a href="revision.html" class="active"><span class="nav-icon">📝</span> Revisions</a>
+        </div>
+        <div class="sidebar-footer">
+          <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+        </div>
+      </nav>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <h1>📝 Revision History</h1>
+          <div class="top-bar-actions">
+            <a href="dashboard.html" class="btn-secondary">← Dashboard</a>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>📜 Revision List</h3>
+          </div>
+          <div id="revisionList"><p style="color: var(--text-secondary);">Loading revisions...</p></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>📊 Compare Versions</h3>
+          </div>
+          <div class="compare-container">
+            <div>
+              <h4 style="margin-bottom: 10px; color: var(--accent-orange);">Old Version</h4>
+              <pre id="oldVersion" class="pre-box" style="min-height: 200px;"></pre>
+            </div>
+            <div>
+              <h4 style="margin-bottom: 10px; color: var(--accent-green);">New Version</h4>
+              <pre id="newVersion" class="pre-box" style="min-height: 200px;"></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>🔍 Line-by-Line Diff</h3>
+          </div>
+          <div id="diffViewer" style="border: 1px solid #eee; border-radius: var(--radius-sm); overflow: hidden;">
+            <p style="padding: 20px; color: var(--text-secondary);">Select a revision to view diff.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/revision.js"></script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">🚀</div>
+                <div><h2>Job Co-Pilot</h2><span>AI-Powered Applications</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <a href="create-application.html"><span class="nav-icon">➕</span> New Application</a>
+                <div class="nav-label">Tools</div>
+                <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+                <a href="salary-coach.html"><span class="nav-icon">💰</span> Salary Coach</a>
+                <a href="calendar.html" class="active"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h1>📅 Calendar & Follow-ups</h1>
+                <div class="top-bar-actions">
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔍 Application Follow-up Status</h3>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">Check when to follow up on your applications and generate calendar reminders.</p>
+                
+                <div class="form-group">
+                    <label for="appSelect">Select Application</label>
+                    <select id="appSelect" class="form-select">
+                        <option value="">-- Select an application --</option>
+                    </select>
+                </div>
+                <button id="checkStatusBtn" class="btn-primary">🔍 Check Status</button>
+                <p id="statusMessage" class="message"></p>
+            </div>
+
+            <div id="statusDisplay" class="card" style="display: none;">
+                <div class="card-header"><h3>📋 Application Status</h3></div>
+                <div class="status-details">
+                    <p><strong>Company:</strong> <span id="statusCompany"></span></p>
+                    <p><strong>Position:</strong> <span id="statusPosition"></span></p>
+                    <p><strong>Status:</strong> <span id="statusAppStatus" class="status-badge not_applied"></span></p>
+                </div>
+                <div class="advice-box">
+                    <h3>💡 Follow-up Advice</h3>
+                    <p id="followUpAction"></p>
+                    <span id="urgencyBadge" class="urgency-badge"></span>
+                </div>
+            </div>
+
+            <div id="icsSection" class="card" style="display: none;">
+                <div class="card-header"><h3>⏰ Generate Calendar Reminder</h3></div>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">Choose when to be reminded and download a .ics file to add to Google Calendar, Outlook, or Apple Calendar.</p>
+                
+                <div class="form-group">
+                    <label for="reminderSelect">Remind me after</label>
+                    <select id="reminderSelect" class="form-select" style="max-width: 250px;">
+                        <option value="3">3 days</option>
+                        <option value="7" selected>1 week</option>
+                        <option value="14">2 weeks</option>
+                        <option value="30">1 month</option>
+                    </select>
+                </div>
+                
+                <button id="generateICSBtn" class="btn-primary">📥 Download .ics File</button>
+                <p id="icsMessage" class="message"></p>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h3>💡 How to Use</h3></div>
+                <ol class="instruction-list">
+                    <li>Select an application from the dropdown</li>
+                    <li>Click "Check Status" to see follow-up advice</li>
+                    <li>Choose a reminder interval (1 week recommended)</li>
+                    <li>Download the .ics file and open it to add to your calendar</li>
+                    <li>When reminded, send a polite follow-up email</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h3>📊 All Applications Overview</h3></div>
+                <div id="allAppsFollowUps"><div class="loading"><div class="loading-spinner"></div><p>Loading overview...</p></div></div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/calendar.js"></script>
+</body>
+</html>

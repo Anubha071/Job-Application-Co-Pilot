@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">🚀</div>
+          <div>
+            <h2>Job Co-Pilot</h2>
+            <span>AI-Powered Applications</span>
+          </div>
+        </div>
+        <div class="sidebar-nav">
+          <div class="nav-label">Main</div>
+          <a href="dashboard.html" class="active"><span class="nav-icon">📊</span> Dashboard</a>
+          <a href="create-application.html"><span class="nav-icon">➕</span> New Application</a>
+          <div class="nav-label">Tools</div>
+          <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+          <a href="salary-coach.html"><span class="nav-icon">💰</span> Salary Coach</a>
+          <a href="calendar.html"><span class="nav-icon">📅</span> Calendar</a>
+          <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
+        </div>
+        <div class="sidebar-footer">
+          <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+        </div>
+      </nav>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <h1>📊 Dashboard</h1>
+          <div class="top-bar-actions">
+            <a href="create-application.html" class="btn-primary">➕ New Application</a>
+          </div>
+        </div>
+
+        <div id="statsGrid" class="stats-grid">
+          <div class="stat-card purple">
+            <div class="stat-icon">📋</div>
+            <div class="stat-content">
+              <h3 id="totalApps">0</h3>
+              <p>Total Applications</p>
+            </div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-content">
+              <h3 id="activeApps">0</h3>
+              <p>Active (Applied/Interview)</p>
+            </div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">🎉</div>
+            <div class="stat-content">
+              <h3 id="offerApps">0</h3>
+              <p>Offers Received</p>
+            </div>
+          </div>
+          <div class="stat-card pink">
+            <div class="stat-icon">📈</div>
+            <div class="stat-content">
+              <h3 id="responseRate">0%</h3>
+              <p>Response Rate</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>📌 All Applications</h3>
+            <span id="appCount" class="badge">0</span>
+          </div>
+          <div class="dashboard-controls">
+            <input type="text" id="searchInput" placeholder="🔍 Search by company or title...">
+            <select id="statusFilter">
+              <option value=""> All Statuses</option>
+              <option value="not_applied">📋 Not Applied</option>
+              <option value="applied">✅ Applied</option>
+              <option value="interviewed">🎯 Interviewed</option>
+              <option value="rejected">❌ Rejected</option>
+              <option value="offer">🎉 Offer</option>
+            </select>
+          </div>
+          <div id="applicationsContainer">
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              <p>Loading applications...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⭐ Fancy Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-icon">🗑️</div>
+        <h2>Delete Application?</h2>
+        <p id="deleteModalText">This will permanently delete the application and all its drafts. This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button id="cancelDeleteBtn" class="btn-secondary">Cancel</button>
+          <button id="confirmDeleteBtn" class="btn-danger">Yes, Delete It</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+  </body>
+</html>

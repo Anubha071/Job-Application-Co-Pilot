@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div style="text-align: center; margin-bottom: 12px;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #06D6A0, #0ABD8B); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 15px rgba(6,214,160,0.3);">
+                    ✨
+                </div>
+            </div>
+            <h1 style="text-align: center;">Create Account</h1>
+            <p class="auth-subtitle" style="text-align: center;">Start streamlining your job applications</p>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Choose a strong password" required>
+                </div>
+                <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, #06D6A0, #0ABD8B); box-shadow: 0 4px 15px rgba(6,214,160,0.3);">Create Account</button>
+                <p id="message" class="message"></p>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+    <script src="../js/register.js"></script>
+</body>
+</html>

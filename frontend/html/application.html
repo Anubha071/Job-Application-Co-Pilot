@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details - Job Co-Pilot</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">🚀</div>
+                <div><h2>Job Co-Pilot</h2><span>AI-Powered Applications</span></div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a>
+                <a href="create-application.html"><span class="nav-icon">➕</span> New Application</a>
+                <div class="nav-label">Tools</div>
+                <a href="voice-interview.html"><span class="nav-icon">🎤</span> Voice Interview</a>
+                <a href="salary-coach.html"><span class="nav-icon">💰</span> Salary Coach</a>
+                <a href="calendar.html"><span class="nav-icon">📅</span> Calendar</a>
+                <a href="revision.html"><span class="nav-icon">📝</span> Revisions</a>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logoutBtnSidebar" class="logout-btn">🚪 Logout</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <h1 id="jobTitle">📄 Application Details</h1>
+                <div class="top-bar-actions">
+                    <button id="backBtn" class="btn-secondary">← Back</button>
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <p id="companyName" class="muted-text" style="margin-bottom: 24px;"></p>
+
+            <!-- Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📌 Application Status</h3>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <select id="statusSelect" class="form-select" style="max-width: 250px;">
+                        <option value="not_applied">📋 Not Applied</option>
+                        <option value="applied">✅ Applied</option>
+                        <option value="interviewed">🎯 Interviewed</option>
+                        <option value="rejected">❌ Rejected</option>
+                        <option value="offer">🎉 Offer</option>
+                    </select>
+                    <button id="saveStatusBtn" class="btn-primary">Save Status</button>
+                </div>
+                <p id="statusMessage" class="message"></p>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔍 Fit Analysis</h3>
+                    </div>
+                    <pre id="fitAnalysis" class="pre-box">No fit analysis yet.</pre>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        <button id="regenFitBtn" class="btn-secondary btn-sm">🔄 Regenerate</button>
+                        <button id="revisionHistoryBtn" class="btn-link btn-sm">📜 History</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📊 ATS Score</h3>
+                    </div>
+                    <div id="atsScore"><p style="color: var(--text-secondary);">No ATS score yet.</p></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📝 Resume Rewrite</h3>
+                    </div>
+                    <pre id="resumeRewrite" class="pre-box">No resume rewrite yet.</pre>
+                    <button id="regenResumeBtn" class="btn-secondary btn-sm" style="margin-top: 12px;">🔄 Regenerate</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>✉️ Cover Letter</h3>
+                    </div>
+                    <pre id="coverLetter" class="pre-box">No cover letter yet.</pre>
+                    <button id="regenCoverBtn" class="btn-secondary btn-sm" style="margin-top: 12px;">🔄 Regenerate</button>
+                </div>
+
+                <div class="card full-width">
+                    <div class="card-header">
+                        <h3>🎯 Interview Pack</h3>
+                    </div>
+                    <pre id="interviewPack" class="pre-box">No interview pack yet.</pre>
+                    <button id="regenInterviewBtn" class="btn-secondary btn-sm" style="margin-top: 12px;">🔄 Regenerate</button>
+                </div>
+            </div>
+
+            <!-- Diff View -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📊 Diff View</h3>
+                    <button id="loadDiffBtn" class="btn-secondary btn-sm">Load Diff</button>
+                </div>
+                <div id="diffArea"></div>
+            </div>
+
+            <!-- Downloads -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📥 Downloads</h3>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="downloadResumeDocxBtn" class="btn-secondary btn-sm">📄 Resume DOCX</button>
+                    <button id="downloadCoverDocxBtn" class="btn-secondary btn-sm">📄 Cover Letter DOCX</button>
+                    <button id="downloadResumePdfBtn" class="btn-secondary btn-sm">📄 Resume PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/application.js"></script>
+</body>
+</html>
