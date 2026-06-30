@@ -1,7 +1,7 @@
 const token = localStorage.getItem("token");
 
 if (!token) {
-  window.location.href = "/static/html/login.html";
+  window.location.href = "/";
 }
 
 let applications = [];
@@ -15,7 +15,7 @@ async function loadApplications() {
 
     if (response.status === 401) {
       localStorage.removeItem("token");
-      window.location.href = "/static/html/login.html";
+      window.location.href = "/";
       return;
     }
 
@@ -168,7 +168,7 @@ document.querySelectorAll("#logoutBtn, #logoutBtnSidebar").forEach(btn => {
     localStorage.removeItem("token");
     localStorage.removeItem("application_id");
     localStorage.removeItem("draft_id");
-    window.location.href = "/static/html/login.html";
+    window.location.href = "/";
   });
 });
 

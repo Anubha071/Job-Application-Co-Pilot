@@ -15,7 +15,7 @@ if (
 ) {
 
     window.location.href =
-        "/static/html/dashboard.html"
+        "/"
 }
 
 async function loadRevisions() {
@@ -233,7 +233,7 @@ document.querySelectorAll("#logoutBtn, #logoutBtnSidebar").forEach(btn => {
         localStorage.removeItem("token");
         localStorage.removeItem("application_id");
         localStorage.removeItem("draft_id");
-        window.location.href = "/static/html/login.html";
+        window.location.href = "/";
     });
 });
 

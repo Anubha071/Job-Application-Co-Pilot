@@ -80,7 +80,7 @@ app.openapi = custom_openapi
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         print("\n" + "=" * 80)
-        print(f"📨 INCOMING REQUEST: {request.method} {request.url.path}")
+        print(f"[INCOMING REQUEST]: {request.method} {request.url.path}")
         print(f"Headers:")
         for header_name, header_value in request.headers.items():
             if header_name.lower() == "authorization":
@@ -144,4 +144,4 @@ app.include_router(
 
 @app.get("/")
 def home():
-    return FileResponse(frontend_dir / "html" / "login.html")
+    return FileResponse(frontend_dir / "html" / "dashboard.html")

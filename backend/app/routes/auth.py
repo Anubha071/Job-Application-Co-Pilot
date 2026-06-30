@@ -10,6 +10,29 @@ router = APIRouter(
     tags=["auth"]
 )
 
+DEMO_EMAIL = "demo@jobcopilot.app"
+DEMO_PASSWORD = "demo123"
+DEMO_USERNAME = "Demo User"
+
+@router.post("/auto-login", response_model=Token)
+def auto_login(db: Session = Depends(get_db)):
+    """Auto-login with a demo account. Creates the demo user if it doesn't exist."""
+    demo_user = db.query(User).filter(User.email == DEMO_EMAIL).first()
+    
+    if not demo_user:
+        hashed = hash_password(DEMO_PASSWORD)
+        demo_user = User(email=DEMO_EMAIL, username=DEMO_USERNAME, password=hashed)
+        db.add(demo_user)
+        db.commit()
+        db.refresh(demo_user)
+    
+    access_token = create_access_token(data={"sub": demo_user.email})
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
+
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
     

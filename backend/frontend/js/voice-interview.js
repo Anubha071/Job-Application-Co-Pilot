@@ -2,7 +2,7 @@
 var token = localStorage.getItem("token");
 
 if (!token) {
-    window.location.href = "/static/html/login.html";
+    window.location.href = "/";
 }
 
 // Speech Recognition
@@ -387,7 +387,7 @@ function doLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("application_id");
     localStorage.removeItem("draft_id");
-    window.location.href = "/static/html/login.html";
+    window.location.href = "/";
     return false;
 }
 

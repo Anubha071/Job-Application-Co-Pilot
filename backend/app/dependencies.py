@@ -16,7 +16,7 @@ def get_current_user(
     db: Session = Depends(get_db)
 ):
     print("=" * 80)
-    print("🔐 AUTHORIZATION CHECK STARTED")
+    print("[AUTHORIZATION CHECK STARTED]")
     print(f"Token received: {credentials.credentials[:50]}...")
     print("=" * 80)
     
@@ -41,10 +41,10 @@ def get_current_user(
         if email is None:
             raise ValueError("Token missing 'sub' claim")
         
-        print(f"✓ DEBUG: Token decoded successfully")
+        print(f"[OK] DEBUG: Token decoded successfully")
         
     except Exception as e:
-        print(f"✗ DEBUG: Token decode FAILED")
+        print(f"[FAIL] DEBUG: Token decode FAILED")
         print(f"   Error Type: {type(e).__name__}")
         print(f"   Error Message: {str(e)}")
         print(f"   Token length: {len(token)}")
@@ -59,12 +59,12 @@ def get_current_user(
         ).first()
 
     if not user:
-        print(f"✗ DEBUG: User NOT found in database for email: {email}")
+        print(f"[FAIL] DEBUG: User NOT found in database for email: {email}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User Not Found."
         )
     
-    print(f"✓ DEBUG: User found: {user.email}")
+    print(f"[OK] DEBUG: User found: {user.email}")
     print("=" * 80)
     return user

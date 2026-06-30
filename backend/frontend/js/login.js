@@ -1,5 +1,11 @@
 
 
+const token = localStorage.getItem("token");
+// If already logged in (auto-login ran), go straight to dashboard
+if (token) {
+  window.location.href = "/";
+}
+
 const form = document.getElementById("loginForm");
 const message = document.getElementById("message");
 

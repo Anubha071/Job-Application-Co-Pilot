@@ -1,7 +1,7 @@
 const token = localStorage.getItem("token");
 
 if (!token) {
-  window.location.href = "/static/html/login.html";
+  window.location.href = "/";
 }
 
 const message = document.getElementById("message");
@@ -102,7 +102,7 @@ document.querySelectorAll("#logoutBtn, #logoutBtnSidebar").forEach(btn => {
     localStorage.removeItem("token");
     localStorage.removeItem("application_id");
     localStorage.removeItem("draft_id");
-    window.location.href = "/static/html/login.html";
+    window.location.href = "/";
   });
 });
 

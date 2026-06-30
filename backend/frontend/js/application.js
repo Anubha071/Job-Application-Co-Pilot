@@ -3,7 +3,7 @@ const token = localStorage.getItem("token");
 const applicationId = localStorage.getItem("application_id");
 
 if(!token) { 
-    window.location.href = "/static/html/login.html";
+    window.location.href = "/";
 }
 
 if(!applicationId) {
@@ -283,7 +283,7 @@ function setupLogout() {
             localStorage.removeItem("token");
             localStorage.removeItem("application_id");
             localStorage.removeItem("draft_id");
-            window.location.href = "/static/html/login.html";
+            window.location.href = "/";
         });
     });
 }
