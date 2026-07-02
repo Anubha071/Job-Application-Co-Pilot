@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse, FileResponse
+from fastapi.responses import RedirectResponse, FileResponse, Response
 from pathlib import Path
 from fastapi.openapi.utils import get_openapi
 from app.database import Base, engine, ensure_sqlite_schema
@@ -145,3 +145,7 @@ app.include_router(
 @app.get("/")
 def home():
     return FileResponse(frontend_dir / "html" / "dashboard.html")
+
+@app.head("/")
+def home_head():
+    return Response(status_code=200)

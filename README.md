@@ -108,10 +108,10 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-The API will be available at `http://localhost:8000` with Swagger docs at `http://localhost:8000/docs`.
+The API will be available at `http://localhost:8002` with Swagger docs at `http://localhost:8002/docs`.
 
 ### 5. Open the App
-Navigate to `http://localhost:8000/static/html/login.html` in your browser.
+Navigate to `http://localhost:8002/static/html/login.html` in your browser.
 
 > **Note**: For Voice Interview features, use **Chrome or Edge** (Web Speech API required).
 
@@ -587,9 +587,9 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 
 # Access
-# API: http://localhost:8000
-# Docs: http://localhost:8000/docs
-# App: http://localhost:8000/static/html/login.html
+# API: http://localhost:8002
+# Docs: http://localhost:8002/docs
+# App: http://localhost:8002/static/html/login.html
 ```
 
 ### Directory Permissions
